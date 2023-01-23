@@ -1,4 +1,6 @@
 import discord
+import time
+import datetime
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -10,6 +12,19 @@ textChannel = 0
 token = ''
 
 currentNumber = 0
+
+
+def get_ETA():
+    starttime = 1671495180
+    startnumber = 69420
+    currentTime = time.time()
+    timeElapsed = currentTime-starttime
+    numberscounted = startnumber-currentNumber
+    numbersPerSecond = numberscounted/timeElapsed
+    estimatedEnd = currentTime+currentNumber/numbersPerSecond
+    timeStamp = datetime.datetime.fromtimestamp(estimatedEnd)
+    return timeStamp
+
 
 
 
@@ -36,6 +51,12 @@ async def on_message(message):
                 print(currentNumber)
             except:
                 await client.get_channel(textChannel).send("Failed to calibrate! Most recent message in #counting-down is not a valid number!")
+
+
+        if message.content == "$eta":
+            eta = get_ETA()
+            await client.get_channel(textChannel).send(f"0 will be reached on {eta}")
+
 
     if message.channel.id == countingChannel:
         # Ensure that the message matches the current count
